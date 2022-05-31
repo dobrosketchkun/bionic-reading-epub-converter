@@ -1,5 +1,5 @@
 
-This is very rudimentary epub converter, but it will probably will get things done. 
+This is very rudimentary epub converter, but it will probably get things done. 
 
 Usage:
 ```python brec.py myepubbook.epub```
