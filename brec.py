@@ -101,9 +101,9 @@ first_tags = """<?xml version='1.0' encoding='utf-8'?>
 htmls = []
 # r=root, d=directories, f = files
 for r, d, f in os.walk(unzip_path):
-    for file in f:
-        if '.html' in file:
-            htmls.append(os.path.join(r, file))
+    for hfile in f:
+        if hfile[-4:] == 'html':
+            htmls.append(os.path.join(r, hfile))
 
 
 for html in htmls:
