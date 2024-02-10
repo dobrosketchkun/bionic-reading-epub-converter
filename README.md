@@ -1,10 +1,10 @@
 
-This is very rudimentary epub converter, but it will probably get things done. 
+This is a rudimentary epub converter to bionic reading, but it will probably get things done. 
 
-Usage:
-```python brec.py myepubbook.epub```
+Usage:  
+```python main_convert.py --epub_path My_Book.epub```
 
-The result would be a "bionic_myepubbook.epub" file and a "myepubbook.epub_zip" folder (this one you can delete or explore)
+The result would be a **"My_Book_BR.epub"**.
 
 
 [Bionic Reading](https://bionic-reading.com/) allegedly  helps you read faster and read in general (or at all) if you have some type of struggles in this field.
