@@ -15,7 +15,7 @@ FIRST_TAGS = """<?xml version='1.0' encoding='utf-8'?>
 def collect_html_from_folder(folder_path: Union[str, Path])->List[Path]:
     """Recursively collects the html files in a folder"""
 
-    htmls = [file_path for file_path in Path(folder_path).rglob("*") if "html" in file_path.suffix]
+    htmls = [file_path for file_path in Path(folder_path).rglob("*") if "htm" in file_path.suffix]
 
     return htmls
 
@@ -60,7 +60,7 @@ def handle_start_tag_of_html(html_part: str)->str:
     full_attr = []
     for attr in html_part[1][1]:
         full_attr.append(attr[0] + f'="{attr[1]}"')
-    full_attr = ', '.join(full_attr)
+    full_attr = ' '.join(full_attr)
     if not full_attr:
         tag += full_attr + '>'
     else:

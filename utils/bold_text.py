@@ -21,7 +21,7 @@ def _is_formatted_text(text:str)->bool:
     """Check for special characteres of a page that do not need text bolding"""
 
     is_formatted = False
-    formatted_text_to_check = ["@page", "margin:"]
+    formatted_text_to_check = ["@page", "margin:", "http:", "www."]
     if not text.strip() or any(formatting in text for formatting in formatted_text_to_check):
         is_formatted = True
 
