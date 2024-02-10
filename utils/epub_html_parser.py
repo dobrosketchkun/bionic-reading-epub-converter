@@ -10,11 +10,13 @@ class EPUBHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         """Append retrieved data to a list"""        
-        self.data_html.append(("Data:", data))
+        self.data_html.append(("Data:", data.replace("&", "&amp;")))
 
     def handle_starttag(self, tag, attrs):
         attributes = []
         for attr in attrs:
+            if "&" in attr[1]:
+                attr = (attr[0], attr[1].replace("&", "&amp;"))
             attributes.append(attr)
         self.data_html.append((("Start tag:", tag), ("attr:", attributes)))
 

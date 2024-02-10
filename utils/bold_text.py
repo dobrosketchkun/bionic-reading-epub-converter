@@ -3,6 +3,9 @@ from math import ceil, log
 import string
 import re
 
+AMPERSAND = "&"
+SEMICOLON = ";"
+AMPERSAND_ENTITY = f"{AMPERSAND}amp{SEMICOLON}"
 
 def bold_token_part_by_position(token_part:str, position:int)->str:
     """Bold a string until a given position of the characters in the string"""
@@ -31,7 +34,9 @@ def process_token_part(token_part:str)->str:
         new_token_part = token_part
 
     else:
-        if len(token_part) <= 3:
+        if token_part == AMPERSAND_ENTITY:
+            new_token_part = f"<b>{token_part}</b>"
+        elif len(token_part) <= 3:
             new_token_part = bold_token_part_by_position(token_part=token_part, position=2)
         else:
             bold_stop = ceil(log(len(token_part), 1.8))
@@ -42,23 +47,34 @@ def process_token_part(token_part:str)->str:
 def bold_text(text):
     """Bold the parts of a text in the bionic reading format"""
 
-    if _is_formatted_text(text):
-        new_text = text
-    else:
-        text_tokens = text.split(" ")
-        new_text = ''
+    text_tokens = text.split(" ")
+    new_text = ''
 
-        for i, token in enumerate(text_tokens):
+    for i, token in enumerate(text_tokens):
+        new_token = ''
+        if _is_formatted_text(token):
+            new_token = token
+        else:
             token_parts = re.findall( r'\w+|[^\s\w]+', token)
-
-            new_token = ''
-            for token_part in token_parts:
+            recomposed_token_parts = recompose_token_if_ampersand(token_parts)
+            for token_part in recomposed_token_parts:
                 new_token_part = process_token_part(token_part)
                 new_token += new_token_part
 
-            if i == 0:
-                new_text += new_token
-            else:
-                new_text += f" {new_token}"
+        if i == 0:
+            new_text += new_token
+        else:
+            new_text += f" {new_token}"
 
     return new_text
+
+def recompose_token_if_ampersand(token_list):
+    """Recomposes text tokens containing '&' and ';' into '&amp;'"""
+
+    if AMPERSAND in token_list and SEMICOLON in token_list:
+        amp_idx = token_list.index(AMPERSAND)
+        semicolon_idx = token_list.index(SEMICOLON)
+        special_char = "".join(token_list[amp_idx:semicolon_idx + 1])
+        return token_list[:amp_idx] + [special_char] + token_list[semicolon_idx + 1:]
+    else:
+        return token_list
