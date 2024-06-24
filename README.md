@@ -1,5 +1,5 @@
 
-This is very rudimentary epub converter, but it will probably get things done. 
+This is a very rudimentary epub converter, but it will probably get things done. 
 
 Usage:
 ```python brec.py myepubbook.epub```
@@ -11,3 +11,16 @@ The result would be a "bionic_myepubbook.epub" file and a "myepubbook.epub_zip" 
 
 
 ![](https://raw.githubusercontent.com/dobrosketchkun/bionic-reading-epub-converter/main/misc/alice.png)
+
+
+### Updates
+
+Probably a less "rudimentary" new version, but it remains to be seen.
+
+Usage:
+
+```
+pytnon brec_v2.py input.epub output.epub 
+```
+
+
