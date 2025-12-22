@@ -50,23 +50,24 @@ class MyHTMLParser(HTMLParser):
         # print("Decl     :", data)
 
 def bolding(text):
-    parts = re.findall( r'\w+|[^\s\w]+', text)
+    parts = re.findall( r'[^\s]+', text)
     new_text = ''
     for part in parts:
         if part in string.punctuation or part in string.digits:
-            new_text += part
+            new_text += ' ' + part
         else:
-            if len(part) <= 3:
-                new_part = ''
-                new_part = f"<b>{part[0]}</b>"
-                new_part += ''.join(part[1:])
-                new_text += ' ' + new_part
+            if len(part) <= 2:
+                point = 0
+            elif len(part) == 3:
+                point = 1
+            elif len(part) <= 10:
+                point = ceil(len(part) / 2)
             else:
                 point = ceil(log(len(part), 2))
-                new_part = ''
-                new_part = f"<b>{part[0:point]}</b>"
-                new_part += ''.join(part[point:])
-                new_text += ' ' + new_part 
+            new_part = ''
+            new_part = f"<b>{part[0:point]}</b>"
+            new_part += ''.join(part[point:])
+            new_text += ' ' + new_part 
     return new_text      
 
 
@@ -97,6 +98,7 @@ except:
 first_tags = """<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>\n"""
 
+first_tags = ""
 
 htmls = []
 # r=root, d=directories, f = files
@@ -104,10 +106,10 @@ for r, d, f in os.walk(unzip_path):
     for hfile in f:
         if hfile[-4:] == 'html':
             htmls.append(os.path.join(r, hfile))
-
+        if hfile[-3:] == 'htm':
+            htmls.append(os.path.join(r, hfile))
 
 for html in htmls:
-  
     with open(html, 'r', encoding='utf-8') as f:
         html_data = f.read()
 
@@ -129,14 +131,14 @@ for html in htmls:
             full_attr = []
             for attr in html_part[1][1]:
                 full_attr.append(attr[0] + f'="{attr[1]}"')
-            full_attr = ', '.join(full_attr)
+            full_attr = ' '.join(full_attr)
             if not full_attr:
                 tag += full_attr + '>'
             else:
                 tag += ' ' + full_attr + '>'
             full_html += tag
         if html_part[0] == 'End tag:':
-            tag = f"</{html_part[1]}>"
+            tag = f"</{html_part[1]}>\n"
             full_html += tag
     full_html = first_tags + full_html
 
@@ -148,5 +150,9 @@ for html in htmls:
 
 os.chdir(unzip_path)
 shutil.make_archive(epub_path, 'zip', './')
+try:
+    os.remove((epub_path + '.zip')[:-4])
+except:
+    pass
 os.rename((epub_path + '.zip'), (epub_path + '.zip')[:-4])
 
