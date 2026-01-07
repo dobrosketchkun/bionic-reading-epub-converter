@@ -102,7 +102,10 @@ htmls = []
 # r=root, d=directories, f = files
 for r, d, f in os.walk(unzip_path):
     for hfile in f:
-        if hfile[-4:] == 'html':
+        file_split = hfile.split('.')
+        if len(file_split) < 2:
+            continue 
+        if file_split[1] == 'html' or file_split[1] == 'htm':
             htmls.append(os.path.join(r, hfile))
 
 
