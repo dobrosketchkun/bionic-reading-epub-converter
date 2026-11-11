@@ -1,5 +1,6 @@
 import os
 import regex
+import sys
 import zipfile
 import argparse
 from bs4 import BeautifulSoup
@@ -70,7 +71,7 @@ def main():
 
     if not os.path.exists(args.input):
         print(f"Error: Input file '{args.input}' does not exist.")
-        return
+        return 1
 
     if os.path.exists(args.output):
         print(f"Warning: Output file '{args.output}' already exists. It will be overwritten.")
@@ -80,6 +81,9 @@ def main():
         print(f"Conversion complete. Output saved to '{args.output}'")
     except Exception as e:
         print(f"Error occurred during processing: {str(e)}")
+        return 1
+
+    return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
